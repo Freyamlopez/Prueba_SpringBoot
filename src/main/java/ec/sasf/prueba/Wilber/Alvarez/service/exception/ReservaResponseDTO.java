@@ -1,4 +1,4 @@
-package ec.sasf.prueba.Wilber.Alvarez.service.exception;
+/* package ec.sasf.prueba.Wilber.Alvarez.service.exception;
 
 
 import java.time.LocalDateTime;
@@ -23,4 +23,4 @@ public class ReservaResponseDTO {
     private Integer cantidadEntradas;
     private Double total;
     private LocalDateTime fechaReserva;
-}
+} */

@@ -15,84 +15,39 @@ import ec.sasf.prueba.Wilber.Alvarez.service.SalaServiceImpl;
 import ec.sasf.prueba.Wilber.Alvarez.service.dto.request.SalaRequestDTO;
 import ec.sasf.prueba.Wilber.Alvarez.service.dto.response.SalaResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-
+import lombok.extern.slf4j.Slf4j;
+ 
+@Slf4j
 @RestController
-@RequestMapping("/api/salas")
-@Tag(
-    name = "Salas",
-    description = "API para la gestión de salas de cine"
-)
+@RequestMapping("/salas")
+@Tag(name = "Salas", description = "Gestion de salas del cine")
 public class SalaController {
-
-    private final SalaService salaService;
-
+ 
+    private final SalaServiceImpl salaService;
+ 
     public SalaController(SalaServiceImpl salaService) {
-        this.salaServicei = salaService;
+        this.salaService = salaService;
     }
-
-    @Operation(
-        summary = "Registrar una sala",
-        description = "Registra una nueva sala de cine."
-    )
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "201",
-            description = "Sala registrada correctamente",
-            content = @Content(schema = @Schema(implementation = SalaResponseDTO.class))
-        ),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Datos de entrada inválidos"
-        )
-    })
+ 
     @PostMapping
-    public ResponseEntity<SalaResponseDTO> registrar(
-            @Valid @RequestBody SalaRequestDTO dto) {
-
-        SalaResponseDTO response = SalaServiceImpl.registrar(dto);
+    @Operation(summary = "Registrar una nueva sala")
+    public ResponseEntity<SalaResponseDTO> registrar(@Valid @RequestBody SalaRequestDTO dto) {
+        log.info("POST /salas - registrando sala '{}'", dto.getNombre());
+        SalaResponseDTO response = salaService.registrar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
-    @Operation(
-        summary = "Listar todas las salas",
-        description = "Obtiene el listado de todas las salas registradas."
-    )
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Listado obtenido correctamente"
-        )
-    })
+ 
     @GetMapping
+    @Operation(summary = "Listar todas las salas registradas")
     public ResponseEntity<List<SalaResponseDTO>> listarTodas() {
         return ResponseEntity.ok(salaService.listarTodas());
     }
-
-    @Operation(
-        summary = "Buscar sala por ID",
-        description = "Obtiene la información de una sala mediante su identificador."
-    )
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "200",
-            description = "Sala encontrada",
-            content = @Content(schema = @Schema(implementation = SalaResponseDTO.class))
-        ),
-        @ApiResponse(
-            responseCode = "404",
-            description = "Sala no encontrada"
-        )
-    })
+ 
     @GetMapping("/{id}")
-    public ResponseEntity<SalaResponseDTO> obtenerPorId(
-            @PathVariable Long id) {
-
+    @Operation(summary = "Obtener una sala por id")
+    public ResponseEntity<SalaResponseDTO> obtenerPorId(@PathVariable Long id) {
         return ResponseEntity.ok(salaService.obtenerPorId(id));
     }
 }
