@@ -25,7 +25,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientEntity> save(ClientEntity client){
+    public ResponseEntity<ClientEntity> save(@RequestBody ClientEntity client){
         return ResponseEntity.ok(this.clientService.save(client));
     }
 

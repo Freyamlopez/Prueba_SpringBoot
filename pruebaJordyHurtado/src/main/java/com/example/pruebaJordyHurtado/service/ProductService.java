@@ -33,4 +33,22 @@ public class ProductService {
         return this.productCrudRepository.findById(id).orElse(null);
     }
 
+
+    public List<ProductEntity> getAvailableProducts(){
+        return this.productCrudRepository.findByDisponibleTrue();
+    }
+
+
+    public ProductEntity updateAvailable(Long idProduct, Boolean disponible) {
+        ProductEntity product = productCrudRepository.findById(idProduct).orElse(null);
+
+        if(product == null){
+            return null;
+        }
+
+        product.setDisponible(disponible);
+
+        return this.productCrudRepository.save(product);
+    }
+
 }

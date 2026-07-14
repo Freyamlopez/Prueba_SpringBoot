@@ -1,6 +1,7 @@
 package com.example.pruebaJordyHurtado.persistence.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +30,10 @@ public class ClientEntity {
     private String telefono;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<OrderEntity> orders;
+
+
 
 }
 
